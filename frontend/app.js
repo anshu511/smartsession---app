@@ -3,6 +3,8 @@ let taskInput = document.getElementById("taskInput");
 let timerDisplay = document.getElementById("timer");
 let startBtn = document.getElementById("startBtn");
 let stopBtn = document.getElementById("stopBtn");
+let clearHistoryBtn = document.getElementById("clearHistoryBtn");
+
 
 let sessions = [];
 
@@ -33,10 +35,11 @@ function renderSessions() {
         let seconds = session.duration % 60;
 
         li.textContent =
-            (index + 1) + ". " +
-            session.task + " — " +
-            String(minutes).padStart(2, "0") + ":" +
-            String(seconds).padStart(2, "0");
+        (index + 1) + ". " +
+        session.task + " — " +
+        String(minutes).padStart(2, "0") + ":" +
+        String(seconds).padStart(2, "0") +
+        " (" + session.timestamp + ")";
 
         sessionList.appendChild(li);
     });
@@ -76,7 +79,8 @@ stopBtn.addEventListener("click", () => {
 
     sessions.push({
         task: taskInput.value,
-        duration: durationSeconds
+        duration: durationSeconds,
+        timestamp: new Date().toLocaleString()
     });
 
     localStorage.setItem("sessions", JSON.stringify(sessions));
@@ -91,3 +95,10 @@ stopBtn.addEventListener("click", () => {
     stopBtn.disabled = true;
 });
 
+clearHistoryBtn.addEventListener("click", () => {
+    if (confirm("Clear all session history?")) {
+        sessions = [];
+        localStorage.removeItem("sessions");
+        renderSessions();
+    }
+    });
