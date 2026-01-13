@@ -1,3 +1,5 @@
+let taskInput = document.getElementById("taskInput");
+
 let timerDisplay = document.getElementById("timer");
 let startBtn = document.getElementById("startBtn");
 let stopBtn = document.getElementById("stopBtn");
@@ -18,6 +20,13 @@ function updateTimer() {
 }
 
 startBtn.addEventListener("click", () => {
+    if (taskInput.value.trim() === "") {
+        alert("Please enter a task name");
+        return;
+    }
+
+    taskInput.disabled = true;
+
     startTime = new Date();
     intervalId = setInterval(updateTimer, 1000);
 
@@ -28,6 +37,10 @@ startBtn.addEventListener("click", () => {
 stopBtn.addEventListener("click", () => {
     clearInterval(intervalId);
 
+    taskInput.disabled = false;
+    taskInput.value = "";
+
     startBtn.disabled = false;
     stopBtn.disabled = true;
 });
+
