@@ -1,0 +1,31 @@
+TITAL : Smart Session - Intelligent Work Session Manager
+
+Discription : 
+
+SmartSession is a web-based productivity tool that monitors user activity like typing speed, pauses, and task progress to detect focus, distraction, or fatigue in real time. It adapts session length, break timing, and task pacing to improve efficiency while preventing burnout. All data is stored locally or securely, ensuring user privacy. Users can create tasks, start focus sessions, and get instant guidance, making it immediately useful for students and professionals.
+
+• Web-based tool to help users stay focused while working
+• Uses pauses and task progress during work sessions
+• Understands focus, distraction, and fatigue in real time
+• Adjusts work session length and break timing dynamically
+• Keeps a record of previous sessions for progress tracking
+• Helps improve productivity and reduce burnout
+
+PRODUCTIVITY STATUSES – SMARTSESSION
+
+. Focused
+Meaning: The user is working steadily and making consistent progress.
+System Action: Continue the current session or slightly extend focus time.
+
+. Distracted
+Meaning: Frequent pauses or noticeable slowdown in progress.
+System Action: Provide a gentle refocus suggestion.
+
+. Fatigued
+Meaning: Long work duration with declining progress or extended pauses.
+System Action: Suggest a short break and reduce session intensity.
+
+. Overloaded
+Meaning: The task or session appears too demanding at the moment.
+System Action: Suggest splitting the task and shortening the session.
+

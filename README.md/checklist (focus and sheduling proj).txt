@@ -1,0 +1,175 @@
+ADAPTIVE FOCUS & PRODUCTIVITY ASSISTANT
+PROJECT CHECKLIST
+
+PLANNING & SETUP
+
+ . Finalize project title and description
+
+ . Define productivity states (Focused, Distracted, Fatigued, Overloaded)
+
+ . Finalize technology stack
+
+ . Create project folder/repository
+
+FRONTEND DEVELOPMENT
+
+ . Design basic UI layout
+
+ . Implement user registration and login
+
+ . Create task creation interface
+
+ . Display task list
+
+ . Implement focus session start/stop
+
+ . Show session timer
+
+ . Display AI suggestions (break / continue / slow down)
+
+ . Apply basic styling and responsiveness
+
+BACKEND DEVELOPMENT
+
+ . Set up Flask/Django server
+
+ . Configure database connection
+
+ . Implement user authentication APIs
+
+ . Implement task CRUD APIs
+
+ . Implement focus session APIs
+
+ . Implement metric collection endpoint
+
+ . Implement adaptation controller logic
+
+DATABASE IMPLEMENTATION
+
+ . Create users table
+
+ . Create tasks table
+
+ . Create focus_sessions table
+
+ . Create session_metrics table
+
+ . Create ai_predictions table
+
+ . Verify foreign key relationships
+
+ . Test database read/write operations
+
+DATA COLLECTION & DATASET PREPARATION
+
+ . Define metrics to be collected
+
+ . Log session data to CSV
+
+ . Manually label productivity states
+
+ . Clean and normalize dataset
+
+ . Split dataset into train and test sets
+
+DEEP LEARNING MODEL DEVELOPMENT
+
+ . Select MLP model
+
+ . Define input features
+
+ . Design model architecture
+
+ . Train the model
+
+ . Evaluate accuracy and loss
+
+ . Save trained model
+
+ . Test model with sample inputs
+
+AI INTEGRATION
+
+ . Load trained model in backend
+
+ . Create AI inference endpoint
+
+ . Send live metrics to AI model
+
+ . Receive predicted productivity state
+
+ . Store predictions in database
+
+ . Trigger adaptation logic
+
+ADAPTATION & FEEDBACK LOGIC
+
+ . Define rules for each productivity state
+
+ . Adjust focus duration dynamically
+
+ . Suggest breaks when fatigued
+
+ . Reduce task load when overloaded
+
+ . Ensure suggestions are non-intrusive
+
+TESTING & VALIDATION
+
+ . Test frontend functionality
+
+ . Test backend APIs
+
+ . Verify real-time data flow
+
+ . Validate AI predictions
+
+ . Test adaptive behavior
+
+ . Handle edge cases
+
+EVALUATION & RESULTS
+
+ . Measure AI prediction accuracy
+
+ . Compare session duration before/after AI
+
+ . Analyze reduction in early session exits
+
+ . Prepare result graphs
+
+DOCUMENTATION & REPORT
+
+ . Write problem statement
+
+ . Write objectives
+
+ . Describe system architecture
+
+ . Explain database schema
+
+ . Explain AI model
+
+ . Add application screenshots
+
+ . Write results and discussion
+
+ . Write limitations and future scope
+
+FINAL REVIEW & SUBMISSION
+
+ . Clean and organize code
+
+ . Verify database schema inclusion
+
+ . Include architecture diagram
+
+ . Test full application end-to-end
+
+ . Ensure project runs without errors
+
+ . Match report format with guidelines
+
+
+
