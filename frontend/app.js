@@ -1,3 +1,10 @@
+let savedSessions = localStorage.getItem("sessions");
+
+if (savedSessions) {
+    sessions = JSON.parse(savedSessions);
+    renderSessions();
+}
+
 let sessionList = document.getElementById("sessionList");
 let sessions = [];
 
@@ -48,7 +55,10 @@ stopBtn.addEventListener("click", () => {
         duration: durationSeconds
     });
 
+    localStorage.setItem("sessions", JSON.stringify(sessions));
+
     renderSessions();
+
 
     taskInput.disabled = false;
     taskInput.value = "";
