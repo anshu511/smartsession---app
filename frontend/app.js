@@ -1,3 +1,6 @@
+let sessionList = document.getElementById("sessionList");
+let sessions = [];
+
 let taskInput = document.getElementById("taskInput");
 
 let timerDisplay = document.getElementById("timer");
@@ -37,10 +40,41 @@ startBtn.addEventListener("click", () => {
 stopBtn.addEventListener("click", () => {
     clearInterval(intervalId);
 
+    let endTime = new Date();
+    let durationSeconds = Math.floor((endTime - startTime) / 1000);
+
+    sessions.push({
+        task: taskInput.value,
+        duration: durationSeconds
+    });
+
+    renderSessions();
+
     taskInput.disabled = false;
     taskInput.value = "";
+
+    timerDisplay.textContent = "00:00";
 
     startBtn.disabled = false;
     stopBtn.disabled = true;
 });
+
+function renderSessions() {
+    sessionList.innerHTML = "";
+
+    sessions.forEach((session, index) => {
+        let li = document.createElement("li");
+
+        let minutes = Math.floor(session.duration / 60);
+        let seconds = session.duration % 60;
+
+        li.textContent =
+            (index + 1) + ". " +
+            session.task + " — " +
+            String(minutes).padStart(2, "0") + ":" +
+            String(seconds).padStart(2, "0");
+
+        sessionList.appendChild(li);
+    });
+}
 
