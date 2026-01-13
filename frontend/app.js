@@ -1,21 +1,15 @@
-let savedSessions = localStorage.getItem("sessions");
-
-if (savedSessions) {
-    sessions = JSON.parse(savedSessions);
-    renderSessions();
-}
-
 let sessionList = document.getElementById("sessionList");
-let sessions = [];
-
 let taskInput = document.getElementById("taskInput");
-
 let timerDisplay = document.getElementById("timer");
 let startBtn = document.getElementById("startBtn");
 let stopBtn = document.getElementById("stopBtn");
 
+let sessions = [];
+
 let startTime = null;
 let intervalId = null;
+
+/* --------- FUNCTIONS --------- */
 
 function updateTimer() {
     let now = new Date();
@@ -28,6 +22,36 @@ function updateTimer() {
         String(minutes).padStart(2, "0") + ":" +
         String(seconds).padStart(2, "0");
 }
+
+function renderSessions() {
+    sessionList.innerHTML = "";
+
+    sessions.forEach((session, index) => {
+        let li = document.createElement("li");
+
+        let minutes = Math.floor(session.duration / 60);
+        let seconds = session.duration % 60;
+
+        li.textContent =
+            (index + 1) + ". " +
+            session.task + " — " +
+            String(minutes).padStart(2, "0") + ":" +
+            String(seconds).padStart(2, "0");
+
+        sessionList.appendChild(li);
+    });
+}
+
+/* --------- LOAD SAVED SESSIONS --------- */
+
+let savedSessions = localStorage.getItem("sessions");
+
+if (savedSessions) {
+    sessions = JSON.parse(savedSessions);
+    renderSessions();
+}
+
+/* --------- EVENT LISTENERS --------- */
 
 startBtn.addEventListener("click", () => {
     if (taskInput.value.trim() === "") {
@@ -56,9 +80,7 @@ stopBtn.addEventListener("click", () => {
     });
 
     localStorage.setItem("sessions", JSON.stringify(sessions));
-
     renderSessions();
-
 
     taskInput.disabled = false;
     taskInput.value = "";
@@ -68,23 +90,4 @@ stopBtn.addEventListener("click", () => {
     startBtn.disabled = false;
     stopBtn.disabled = true;
 });
-
-function renderSessions() {
-    sessionList.innerHTML = "";
-
-    sessions.forEach((session, index) => {
-        let li = document.createElement("li");
-
-        let minutes = Math.floor(session.duration / 60);
-        let seconds = session.duration % 60;
-
-        li.textContent =
-            (index + 1) + ". " +
-            session.task + " — " +
-            String(minutes).padStart(2, "0") + ":" +
-            String(seconds).padStart(2, "0");
-
-        sessionList.appendChild(li);
-    });
-}
 
