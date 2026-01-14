@@ -4,6 +4,9 @@ let timerDisplay = document.getElementById("timer");
 let startBtn = document.getElementById("startBtn");
 let stopBtn = document.getElementById("stopBtn");
 let clearHistoryBtn = document.getElementById("clearHistoryBtn");
+let statusLabel = document.getElementById("status");
+let totalTimeLabel = document.getElementById("totalTime");
+
 
 
 let sessions = [];
@@ -45,6 +48,27 @@ function renderSessions() {
     });
 }
 
+function updateTotalTimeToday() {
+    let today = new Date().toDateString();
+    let totalSeconds = 0;
+
+    sessions.forEach(session => {
+        let sessionDate = new Date(session.timestamp).toDateString();
+        if (sessionDate === today) {
+            totalSeconds += session.duration;
+        }
+    });
+
+    let minutes = Math.floor(totalSeconds / 60);
+    let seconds = totalSeconds % 60;
+
+    totalTimeLabel.textContent =
+        "Total Focus Today: " +
+        String(minutes).padStart(2, "0") + ":" +
+        String(seconds).padStart(2, "0");
+}
+
+
 /* --------- LOAD SAVED SESSIONS --------- */
 
 let savedSessions = localStorage.getItem("sessions");
@@ -52,6 +76,7 @@ let savedSessions = localStorage.getItem("sessions");
 if (savedSessions) {
     sessions = JSON.parse(savedSessions);
     renderSessions();
+    updateTotalTimeToday();
 }
 
 /* --------- EVENT LISTENERS --------- */
@@ -68,6 +93,7 @@ startBtn.addEventListener("click", () => {
     intervalId = setInterval(updateTimer, 1000);
 
     startBtn.disabled = true;
+    statusLabel.textContent = "Status: Active";
     stopBtn.disabled = false;
 });
 
@@ -85,6 +111,7 @@ stopBtn.addEventListener("click", () => {
 
     localStorage.setItem("sessions", JSON.stringify(sessions));
     renderSessions();
+    updateTotalTimeToday();
 
     taskInput.disabled = false;
     taskInput.value = "";
@@ -92,6 +119,7 @@ stopBtn.addEventListener("click", () => {
     timerDisplay.textContent = "00:00";
 
     startBtn.disabled = false;
+    statusLabel.textContent = "Status: Idle";
     stopBtn.disabled = true;
 });
 
