@@ -6,24 +6,31 @@ let stopBtn = document.getElementById("stopBtn");
 let clearHistoryBtn = document.getElementById("clearHistoryBtn");
 let statusLabel = document.getElementById("status");
 let totalTimeLabel = document.getElementById("totalTime");
+let pauseBtn = document.getElementById("pauseBtn");
+let weeklyTimeLabel = document.getElementById("weeklyTime");
+
+
 
 let sessions = [];
 let startTime = null;
 let intervalId = null;
+let elapsedSeconds = 0;
+let isPaused = false;
+
 
 /* --------- FUNCTIONS --------- */
 
 function updateTimer() {
-    let now = new Date();
-    let elapsed = Math.floor((now - startTime) / 1000);
+    elapsedSeconds++;
 
-    let minutes = Math.floor(elapsed / 60);
-    let seconds = elapsed % 60;
+    let minutes = Math.floor(elapsedSeconds / 60);
+    let seconds = elapsedSeconds % 60;
 
     timerDisplay.textContent =
         String(minutes).padStart(2, "0") + ":" +
         String(seconds).padStart(2, "0");
 }
+
 
 function renderSessions() {
     sessionList.innerHTML = "";
@@ -65,6 +72,28 @@ function updateTotalTimeToday() {
         String(seconds).padStart(2, "0");
 }
 
+function updateWeeklyFocus() {
+    let now = new Date();
+    let totalSeconds = 0;
+
+    sessions.forEach(session => {
+        let sessionDate = new Date(session.timestamp);
+        let diffDays = (now - sessionDate) / (1000 * 60 * 60 * 24);
+
+        if (diffDays <= 7) {
+            totalSeconds += session.duration;
+        }
+    });
+
+    let minutes = Math.floor(totalSeconds / 60);
+    let seconds = totalSeconds % 60;
+
+    weeklyTimeLabel.textContent =
+        "Weekly Focus: " +
+        String(minutes).padStart(2, "0") + ":" +
+        String(seconds).padStart(2, "0");
+}
+
 /* --------- LOAD SAVED SESSIONS --------- */
 
 let savedSessions = localStorage.getItem("sessions");
@@ -72,6 +101,7 @@ if (savedSessions) {
     sessions = JSON.parse(savedSessions);
     renderSessions();
     updateTotalTimeToday();
+    updateWeeklyFocus();
 }
 
 /* --------- EVENT LISTENERS --------- */
@@ -83,36 +113,58 @@ startBtn.addEventListener("click", () => {
     }
 
     taskInput.disabled = true;
-    startTime = new Date();
+    elapsedSeconds = 0;
+    isPaused = false;
+
+    updateTimer();
     intervalId = setInterval(updateTimer, 1000);
 
     statusLabel.textContent = "Status: Active";
+
     startBtn.disabled = true;
+    pauseBtn.disabled = false;
     stopBtn.disabled = false;
+});
+
+pauseBtn.addEventListener("click", () => {
+    if (!isPaused) {
+        clearInterval(intervalId);
+        isPaused = true;
+        pauseBtn.textContent = "Resume";
+        statusLabel.textContent = "Status: Paused";
+    } else {
+        intervalId = setInterval(updateTimer, 1000);
+        isPaused = false;
+        pauseBtn.textContent = "Pause";
+        statusLabel.textContent = "Status: Active";
+    }
 });
 
 stopBtn.addEventListener("click", () => {
     clearInterval(intervalId);
 
-    let endTime = new Date();
-    let durationSeconds = Math.floor((endTime - startTime) / 1000);
-
     sessions.push({
         task: taskInput.value,
-        duration: durationSeconds,
+        duration: elapsedSeconds,
         timestamp: new Date().toISOString()
     });
 
     localStorage.setItem("sessions", JSON.stringify(sessions));
     renderSessions();
     updateTotalTimeToday();
+    updateWeeklyFocus();
+
+    elapsedSeconds = 0;
+    timerDisplay.textContent = "00:00";
 
     taskInput.disabled = false;
     taskInput.value = "";
-    timerDisplay.textContent = "00:00";
 
     statusLabel.textContent = "Status: Idle";
+
     startBtn.disabled = false;
+    pauseBtn.disabled = true;
+    pauseBtn.textContent = "Pause";
     stopBtn.disabled = true;
 });
 
@@ -122,5 +174,6 @@ clearHistoryBtn.addEventListener("click", () => {
         localStorage.removeItem("sessions");
         renderSessions();
         updateTotalTimeToday();
+        updateWeeklyFocus();
     }
 });
