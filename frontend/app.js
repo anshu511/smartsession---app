@@ -7,10 +7,7 @@ let clearHistoryBtn = document.getElementById("clearHistoryBtn");
 let statusLabel = document.getElementById("status");
 let totalTimeLabel = document.getElementById("totalTime");
 
-
-
 let sessions = [];
-
 let startTime = null;
 let intervalId = null;
 
@@ -38,11 +35,11 @@ function renderSessions() {
         let seconds = session.duration % 60;
 
         li.textContent =
-        (index + 1) + ". " +
-        session.task + " — " +
-        String(minutes).padStart(2, "0") + ":" +
-        String(seconds).padStart(2, "0") +
-        " (" + session.timestamp + ")";
+            (index + 1) + ". " +
+            session.task + " — " +
+            String(minutes).padStart(2, "0") + ":" +
+            String(seconds).padStart(2, "0") +
+            " (" + new Date(session.timestamp).toLocaleString() + ")";
 
         sessionList.appendChild(li);
     });
@@ -68,11 +65,9 @@ function updateTotalTimeToday() {
         String(seconds).padStart(2, "0");
 }
 
-
 /* --------- LOAD SAVED SESSIONS --------- */
 
 let savedSessions = localStorage.getItem("sessions");
-
 if (savedSessions) {
     sessions = JSON.parse(savedSessions);
     renderSessions();
@@ -83,50 +78,4 @@ if (savedSessions) {
 
 startBtn.addEventListener("click", () => {
     if (taskInput.value.trim() === "") {
-        alert("Please enter a task name");
-        return;
-    }
-
-    taskInput.disabled = true;
-
-    startTime = new Date();
-    intervalId = setInterval(updateTimer, 1000);
-
-    startBtn.disabled = true;
-    statusLabel.textContent = "Status: Active";
-    stopBtn.disabled = false;
-});
-
-stopBtn.addEventListener("click", () => {
-    clearInterval(intervalId);
-
-    let endTime = new Date();
-    let durationSeconds = Math.floor((endTime - startTime) / 1000);
-
-    sessions.push({
-        task: taskInput.value,
-        duration: durationSeconds,
-        timestamp: new Date().toLocaleString()
-    });
-
-    localStorage.setItem("sessions", JSON.stringify(sessions));
-    renderSessions();
-    updateTotalTimeToday();
-
-    taskInput.disabled = false;
-    taskInput.value = "";
-
-    timerDisplay.textContent = "00:00";
-
-    startBtn.disabled = false;
-    statusLabel.textContent = "Status: Idle";
-    stopBtn.disabled = true;
-});
-
-clearHistoryBtn.addEventListener("click", () => {
-    if (confirm("Clear all session history?")) {
-        sessions = [];
-        localStorage.removeItem("sessions");
-        renderSessions();
-    }
-    });
+        alert("Please enter a task na
