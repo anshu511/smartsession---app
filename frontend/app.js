@@ -78,4 +78,49 @@ if (savedSessions) {
 
 startBtn.addEventListener("click", () => {
     if (taskInput.value.trim() === "") {
-        alert("Please enter a task na
+        alert("Please enter a task name");
+        return;
+    }
+
+    taskInput.disabled = true;
+    startTime = new Date();
+    intervalId = setInterval(updateTimer, 1000);
+
+    statusLabel.textContent = "Status: Active";
+    startBtn.disabled = true;
+    stopBtn.disabled = false;
+});
+
+stopBtn.addEventListener("click", () => {
+    clearInterval(intervalId);
+
+    let endTime = new Date();
+    let durationSeconds = Math.floor((endTime - startTime) / 1000);
+
+    sessions.push({
+        task: taskInput.value,
+        duration: durationSeconds,
+        timestamp: new Date().toISOString()
+    });
+
+    localStorage.setItem("sessions", JSON.stringify(sessions));
+    renderSessions();
+    updateTotalTimeToday();
+
+    taskInput.disabled = false;
+    taskInput.value = "";
+    timerDisplay.textContent = "00:00";
+
+    statusLabel.textContent = "Status: Idle";
+    startBtn.disabled = false;
+    stopBtn.disabled = true;
+});
+
+clearHistoryBtn.addEventListener("click", () => {
+    if (confirm("Clear all session history?")) {
+        sessions = [];
+        localStorage.removeItem("sessions");
+        renderSessions();
+        updateTotalTimeToday();
+    }
+});
