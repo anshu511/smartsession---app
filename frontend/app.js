@@ -1,24 +1,25 @@
+/* ========= DOM ELEMENTS ========= */
+
 let sessionList = document.getElementById("sessionList");
 let taskInput = document.getElementById("taskInput");
 let timerDisplay = document.getElementById("timer");
 let startBtn = document.getElementById("startBtn");
+let pauseBtn = document.getElementById("pauseBtn");
 let stopBtn = document.getElementById("stopBtn");
 let clearHistoryBtn = document.getElementById("clearHistoryBtn");
 let statusLabel = document.getElementById("status");
 let totalTimeLabel = document.getElementById("totalTime");
-let pauseBtn = document.getElementById("pauseBtn");
 let weeklyTimeLabel = document.getElementById("weeklyTime");
+let themeToggle = document.getElementById("themeToggle");
 
-
+/* ========= STATE ========= */
 
 let sessions = [];
-let startTime = null;
-let intervalId = null;
 let elapsedSeconds = 0;
+let intervalId = null;
 let isPaused = false;
 
-
-/* --------- FUNCTIONS --------- */
+/* ========= TIMER ========= */
 
 function updateTimer() {
     elapsedSeconds++;
@@ -31,6 +32,7 @@ function updateTimer() {
         String(seconds).padStart(2, "0");
 }
 
+/* ========= RENDER SESSIONS ========= */
 
 function renderSessions() {
     sessionList.innerHTML = "";
@@ -52,6 +54,8 @@ function renderSessions() {
     });
 }
 
+/* ========= TOTAL FOCUS TODAY ========= */
+
 function updateTotalTimeToday() {
     let today = new Date().toDateString();
     let totalSeconds = 0;
@@ -71,6 +75,8 @@ function updateTotalTimeToday() {
         String(minutes).padStart(2, "0") + ":" +
         String(seconds).padStart(2, "0");
 }
+
+/* ========= WEEKLY FOCUS ========= */
 
 function updateWeeklyFocus() {
     let now = new Date();
@@ -94,7 +100,7 @@ function updateWeeklyFocus() {
         String(seconds).padStart(2, "0");
 }
 
-/* --------- LOAD SAVED SESSIONS --------- */
+/* ========= LOAD SAVED DATA ========= */
 
 let savedSessions = localStorage.getItem("sessions");
 if (savedSessions) {
@@ -104,7 +110,7 @@ if (savedSessions) {
     updateWeeklyFocus();
 }
 
-/* --------- EVENT LISTENERS --------- */
+/* ========= START SESSION ========= */
 
 startBtn.addEventListener("click", () => {
     if (taskInput.value.trim() === "") {
@@ -126,6 +132,8 @@ startBtn.addEventListener("click", () => {
     stopBtn.disabled = false;
 });
 
+/* ========= PAUSE / RESUME ========= */
+
 pauseBtn.addEventListener("click", () => {
     if (!isPaused) {
         clearInterval(intervalId);
@@ -140,6 +148,8 @@ pauseBtn.addEventListener("click", () => {
     }
 });
 
+/* ========= STOP SESSION ========= */
+
 stopBtn.addEventListener("click", () => {
     clearInterval(intervalId);
 
@@ -150,6 +160,7 @@ stopBtn.addEventListener("click", () => {
     });
 
     localStorage.setItem("sessions", JSON.stringify(sessions));
+
     renderSessions();
     updateTotalTimeToday();
     updateWeeklyFocus();
@@ -168,6 +179,8 @@ stopBtn.addEventListener("click", () => {
     stopBtn.disabled = true;
 });
 
+/* ========= CLEAR HISTORY ========= */
+
 clearHistoryBtn.addEventListener("click", () => {
     if (confirm("Clear all session history?")) {
         sessions = [];
@@ -175,5 +188,45 @@ clearHistoryBtn.addEventListener("click", () => {
         renderSessions();
         updateTotalTimeToday();
         updateWeeklyFocus();
+    }
+});
+
+/* ========= THEME (AUTO + MANUAL) ========= */
+
+let systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+let savedTheme = localStorage.getItem("theme");
+
+if (savedTheme === "dark" || (!savedTheme && systemPrefersDark)) {
+    document.body.classList.add("dark");
+    themeToggle.textContent = "Light Mode";
+} else {
+    themeToggle.textContent = "Dark Mode";
+}
+
+themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+
+    if (document.body.classList.contains("dark")) {
+        localStorage.setItem("theme", "dark");
+        themeToggle.textContent = "Light Mode";
+    } else {
+        localStorage.setItem("theme", "light");
+        themeToggle.textContent = "Dark Mode";
+    }
+});
+
+/* ========= SYSTEM THEME CHANGE ========= */
+
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
+    let savedTheme = localStorage.getItem("theme");
+
+    if (!savedTheme) {
+        if (e.matches) {
+            document.body.classList.add("dark");
+            themeToggle.textContent = "Light Mode";
+        } else {
+            document.body.classList.remove("dark");
+            themeToggle.textContent = "Dark Mode";
+        }
     }
 });

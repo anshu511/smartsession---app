@@ -102,3 +102,56 @@ li {
     border-radius: 6px;
     font-size: 13px;
 }
+
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 6px 12px;
+    font-size: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #ddd;
+    border: none;
+}
+
+body.dark {
+    background: #121212;
+}
+
+body.dark .container {
+    background: #1e1e1e;
+    color: #eaeaea;
+}
+
+body.dark input {
+    background: #2a2a2a;
+    color: #eaeaea;
+    border: 1px solid #444;
+}
+
+body.dark #status {
+    color: #bbb;
+}
+
+body.dark #timer {
+    color: #ffffff;
+}
+
+body.dark li {
+    background: #2a2a2a;
+    color: #eaeaea;
+}
+
+body.dark button {
+    opacity: 0.95;
+}
+
+body.dark #clearHistoryBtn {
+    background: #555;
+}
+
+body.dark .theme-toggle {
+    background: #444;
+    color: #fff;
+}
